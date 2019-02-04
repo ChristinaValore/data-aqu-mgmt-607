@@ -31,7 +31,7 @@ mushroom_subset <- subset(mushroom, select=c("Class","Gill-Size","Stalk-Shape", 
 head(mushroom_subset)
 ```
 
-## Using a function to change the abbreviations to full words
+## Changing the abbreviations to full words
 
 ```{r abbreviation}
 
