@@ -1,0 +1,65 @@
+---
+title: "Assignment 1_607"
+author: "Christina Valore"
+date: "2/2/2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+##Assignment – Loading Data into a Data Frame
+
+Your task is to study the dataset and the associated description of the data (i.e. “data dictionary”). You may need to look around a bit, but it’s there! You should take the data, and create a data frame with a subset of the columns in the dataset. You should include the column that indicates edible or poisonous and three or four other columns. You should also add meaningful column names and replace the abbreviations used in the data—for example, in the appropriate column, “e” might become “edible.” Your deliverable is the R code to perform these transformation tasks.
+
+
+## Loading the data from a URL and adding column names
+
+```{r mushroom data}
+mushroom<-read.csv("https://archive.ics.uci.edu/ml/machine-learning-databases/mushroom/agaricus-lepiota.data", header=FALSE, stringsAsFactors=FALSE)
+
+colnames(mushroom) <- c("Class","Cap-Shape","Cap-Surface","Cap-Color","Bruises?","Odor","Gill-Attachment","Gill-Spacing","Gill-Size","Gill-Color","Stalk-Shape","Stalk-Root","Stalk-Surface-Above-Ring","Stalk-Surface-Below-Ring","Stalk-Color-Above-Ring","Stalk-Color-Below-Ring","Veil-Type","Veil-Color","Ring-Number","Ring-Type","Spore-Print-Color","Population","Habitat")
+
+head(mushroom)
+
+```
+
+## Creating a subset of the original dataframe
+
+```{r mushroom subset}
+mushroom_subset <- subset(mushroom, select=c("Class","Gill-Size","Stalk-Shape", "Population","Habitat"))
+
+head(mushroom_subset)
+```
+
+## Using a function to change the abbreviations to full words
+
+```{r abbreviation}
+
+mushroom_subset$Class[mushroom_subset$Class == "e"] <- "Edible"
+mushroom_subset$Class[mushroom_subset$Class == "p"] <- "Poisonous"
+
+mushroom_subset$`Gill-Size`[mushroom_subset$`Gill-Size` == "b"] <- "Broad"
+mushroom_subset$`Gill-Size`[mushroom_subset$`Gill-Size` == "n"] <- "Narrow"
+
+mushroom_subset$`Stalk-Shape`[mushroom_subset$`Stalk-Shape` == "e"] <- "Enlarging"
+mushroom_subset$`Stalk-Shape`[mushroom_subset$`Stalk-Shape` == "t"] <- "Tapering"
+
+mushroom_subset$Population[mushroom_subset$Population == "a"] <- "Abundant"
+mushroom_subset$Population[mushroom_subset$Population == "c"] <- "Clustered"
+mushroom_subset$Population[mushroom_subset$Population == "n"] <- "Numerous"
+mushroom_subset$Population[mushroom_subset$Population == "s"] <- "Scattered"
+mushroom_subset$Population[mushroom_subset$Population == "v"] <- "Several"
+mushroom_subset$Population[mushroom_subset$Population == "y"] <- "Solitary"
+
+mushroom_subset$Habitat[mushroom_subset$Habitat == "g"] <- "Grasses"
+mushroom_subset$Habitat[mushroom_subset$Habitat == "l"] <- "Leaves"
+mushroom_subset$Habitat[mushroom_subset$Habitat == "m"] <- "Meadows"
+mushroom_subset$Habitat[mushroom_subset$Habitat == "p"] <- "Paths"
+mushroom_subset$Habitat[mushroom_subset$Habitat == "u"] <- "Urban"
+mushroom_subset$Habitat[mushroom_subset$Habitat == "w"] <- "Waste"
+mushroom_subset$Habitat[mushroom_subset$Habitat == "d"] <- "Woods"
+
+head(mushroom_subset)
+
+```
+
