@@ -1,0 +1,37 @@
+---
+title: "Assignment 2 - 607"
+author: "Christina Valore"
+date: "2/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## SQL and R
+
+Choose six recent popular movies.  Ask at least five people that you know (friends, family, classmates, imaginary friends) to rate each of these movie that they have seen on a scale of 1 to 5.  Take the results (observations) and store them in a SQL database.  Load the information into an R dataframe.
+
+```{r mysql connection}
+install.packages("RMySQL")
+install.packages("DBI")
+library(RMySQL)
+library (DBI)
+movie_rating_db <- dbConnect(MySQL(), user='root', password='HIDDEN', dbname='movieratings', host='127.0.0.1')
+
+```
+
+
+```{r sql to dataframe}
+
+movie_df <- dbGetQuery(movie_rating_db,"Select title, firstname, lastname,critic_rating from movies m, critics c, ratings r where  m.id = r.movie and c.id =r.critic;")
+
+movie_df
+
+colnames(movie_df)<-c("Movie", "First Name", "Last Name", "Movie Rating")
+
+movie_df
+
+```
+
