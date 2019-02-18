@@ -1,0 +1,135 @@
+---
+title: "Data 607_Assignment 3"
+author: "Christina Valore"
+date: "2/17/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Assignment 3
+
+Copy the introductory example. The vector name stores the extracted names.
+
+```{r intro example}
+library(stringr)
+raw.data <- "555-1239Moe Szyslak(636) 555-0113Burns, C. Montgomery555-6542Rev. Timothy Lovejoy555 8904Ned Flanders636-555-3226Simpson, Homer5553642Dr. Julius Hibbert"
+
+Name <- unlist(str_extract_all(raw.data, "[[:alpha:]., ]{2,}"))
+Name
+```
+
+###Question 3
+
+(a) Use the tools of this chapter to rearrange the vector so that all elements conform to the standard first_name last_name.
+
+```{r rearrange first last}
+#change order in Burns and Simpson
+Name <- str_replace_all(Name, "(.+)(, .+)$", "\\2 \\1")
+Name
+```
+```{r comma removal}
+#remove commas from Burns and Simpson
+Name <- str_replace_all(Name, ", ", "") 
+Name
+```
+
+(b) Construct a logical vector indicating whether a character has a title (i.e., Rev. and Dr.).
+```{r logical vector}
+library(knitr)
+logical <- data.frame(Name)
+logical$Title <- str_detect(string = Name, pattern = "\\w{2,3}\\.")
+logical
+```
+
+(c) Construct a logical vector indicating whether a character has a second name.
+
+```{r second name}
+logical$Second_Name <- str_detect(string = Name, pattern = "[A-Z]{1}\\.")
+logical
+```
+
+###Question 4
+
+Describe the types of strings that conform to the following regular expressions and construct an example that is matched by the regular expression.
+
+(1) [0-9]+\\$
+```{r one}
+test<- c("Christina456$Toby", "7150$", "123$789", "cdcse", "$", "98765$123")
+test<- unlist(str_extract_all(test, pattern = "[0-9]+\\$" ))
+test
+```
+We see that this espression looks for any combination of numbers 0-9 followed by a $ as the pattern to extract.
+
+(2) \\b[a-z]{1,4}\\b
+
+```{r two}
+test <- c("CHRISTINA", "chri", "CHRI Val", "56787652", "c6v53b8w764hd", "val", "dan")
+test <- str_extract_all(test, pattern = "\\b[a-z]{1,4}\\b" )
+test
+```
+We see that this expression takes a 3 character single word that is all lowercase. 
+
+(3) .*?\\.txt$
+
+```{r three}
+test <- c("christina.txt", "VALORE.TXT", ".txt", "TXT", "txt", ".txt Christina", "help .txt", "help. txt")
+test <- str_extract_all(test, pattern = ".*?\\.txt$" )
+test
+
+```
+We see that this expression takes any string ending in .txt that is lowercase. The .txt can be alone but there can be no space between the period and the 'txt' phrase. 
+
+(4) \\d{2}/\\d{2}/\\d{4}
+
+```{r four}
+test <- c("02/17/2019", "2/1/19", "christina", "CHRISTINA", "2019/02/17", "12 12 4567", "03/17/20195456")
+test <- str_extract_all(test, pattern = "\\d{2}/\\d{2}/\\d{4}")
+test
+```
+We see that this expression takes 2 digits separated by a / then 2 more digits separated by a/ and finally four digits. After the four digits, if there are more digits, the function only exytracts the first four.
+
+(5) <(.+?)>.+?</\\1>
+```{r five}
+test<- c("<Christina>Toby</Valore>", "<christina>", "<1233christina>, <Christina> TOBY</Christina>","<Christina> TOBY</CHRISTINA>")
+test<- str_extract_all(test, pattern = "<(.+?)>.+?</\\1>")
+test
+
+```
+We see that this expression looks to match the strings between the opening <> and the closing </>. The words between the arrows are case sensitive. This looks as if the pattern is looking for HTML tags.
+
+### Question 9 
+
+The following code hides a secret message. Crack it with R and regular expressions. Hint: Some of the characters are more revealing than others! The code snippet is also available in the materials at www.r-datacollection.com.
+
+```{r code cracking lower}
+code <- "clcopCow1zmstc0d87wnkig7OvdicpNuggvhryn92Gjuwczi8hqrfpRxs5Aj5dwpn0TanwoUwisdij7Lj8kpf03AT5Idr3coc0bt7yczjatOaootj55t3Nj3ne6c4Sfek.r1w1YwwojigOd6vrfUrbz2.2bkAnbhzgv4R9i05zEcrop.wAgnb.SqoU65fPa1otfb7wEm24k6t3sR9zqe5fy89n6Nd5t9kc4fE905gmc4Rgxo5nhDk!gr"
+
+#first lets try the lower case letters
+lower_code = unlist(str_extract_all(code, "[[:lower:].!]"))
+print (lower_code)
+
+#Remove "" for easier reading
+lower_code_new = paste(lower_code, collapse="")
+print (lower_code_new)
+
+```
+We don't see anything from just the lower case alone, lets try upper.
+
+```{r  code cracking upper}
+#upper case letters
+upper_code = unlist(str_extract_all(code, "[[:upper:].!]"))
+print (upper_code)
+
+#Remove "" for easier reading
+upper_code_new = paste(upper_code, collapse="")
+print (upper_code_new)
+
+#Remove the periods 
+cracked = str_replace_all(upper_code_new, "[\\.]", " ")
+print(cracked)
+```
+
+Code is: CONGRATULATIONS YOU ARE A SUPERNERD!
