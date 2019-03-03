@@ -1,0 +1,92 @@
+---
+title: 'Data 607: Assignment 5'
+author: "Christina Valore"
+date: "3/2/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, results="hide")
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(plotly)
+```
+
+## Overview
+For this assignment, we were to create an airlines .CSV file and perform R functions to clean and transform the data using the packages tidyr and dplyr. We were then asked to compare the flight delays for both airlines. This was done via a bar graph.
+
+```{r read in data,results= "markup"}
+#read in data from GitHub
+airlines<-read.csv("https://raw.githubusercontent.com/ChristinaValore/data-aqu-mgmt-607/master/Airlines.csv",header=TRUE,sep=",")
+
+#view the data
+airlines
+```
+
+```{r data cleaning,results="markup"}
+
+# Remove NA values and rename columns while placing data into new data frame
+airlines_data<-airlines %>%  
+  filter(!is.na(Seattle)) %>% 
+    rename("Airline"=X,"Arrival Status"=X.1,"Los Angeles"=Los.Angeles,"San Diego"=San.Diego,"San Francisco"=San.Francisco)
+
+# Add the missing airline names 
+airlines_data$Airline<-as.character(airlines_data$Airline)
+airlines_data$Airline[2]<-c("Alaska")
+airlines_data$Airline[4]<-c("AM West")
+
+#view the data
+airlines_data
+```
+
+```{r sort data by region,results="markup"}
+
+# Gather the city columns into rows
+tidy_data<-airlines_data %>% 
+  gather(key=City,value="Amount",3:7)
+
+# Order the data by Airline then by Arrival Status (high to low) and finally by City
+tidy_data<-arrange(tidy_data,Airline,desc(`Arrival Status`), City)
+
+#view the data
+tidy_data
+
+```
+```{r total amt flights and total amt delayed/on time,results="markup"}
+
+#See the total amount of flights by airline
+tidy_data %>% 
+  group_by(Airline) %>% 
+  summarize(`Total Flights`=sum(Amount))
+
+#See the total amount of delayed and on time flights by airline
+tidy_data %>% 
+  group_by(Airline,`Arrival Status`) %>% 
+  summarize(`Total Amount`=sum(Amount))
+```
+```{r add new columns,results="markup"}
+# Spread the arrival status and amount rows into columns and add new columns for total amount, on time ration and delayed ration
+spread_data<-tidy_data %>% 
+  spread(`Arrival Status`,Amount) %>% 
+  mutate(Total = delayed+`on time`,`On time ratio`=`on time`/Total,`Delayed Ratio`=delayed/Total)
+
+# View data
+spread_data
+```
+
+```{r delayed flights graph,results="markup"}
+#Create a graph for the delayed flights
+ggplotly(ggplot(spread_data,aes(x=City,y=`Delayed Ratio`))+geom_bar(aes(fill=Airline),stat="identity",position="dodge")+xlab("US City")+ylab("Delayed Flights Ratio")+ggtitle("Flights Delayed by City"))
+```
+
+From this graph we can see the comparison of delayed flights between airlines. The highest ratio of delayed flights come from AM West Airlines. Specifically, AM West flights to San Francisco are delayed approximately 28.73% of the time. While the lowest ratio of delayed flights come from Alaska Airlines, with flights to Phoenix delayed approximately 5% of the time. Overall flights to San Francisco have higher ratios of being delayed when compared to other US cities. 
+
+```{r on time flights graph,results="markup"}
+#Create a graph for on time flights
+ggplotly(ggplot(spread_data,aes(x=City,y=`On time ratio`))+geom_bar(aes(fill=Airline),stat="identity",position="dodge")+xlab("US City")+ylab("On Time Flights Ratio")+ggtitle("On Time Flights by City"))
+```
+
+As we saw in the last graph, delayed flights overall had the lowest ratios of being delayed when flying to Phoenix and so, here we can see that Phoenix has the highest on time flight ratios, with Alaska at approximately 94.84% and AM West at 92.1%.
+
+So if you are planning to fly to Phoenix you can probably expect the flight to be on time, while flying to San Francisco has a higher chance of being delayed. 
