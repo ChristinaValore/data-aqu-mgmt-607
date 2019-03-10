@@ -1,0 +1,123 @@
+---
+title: "Data 607 - Project 2"
+author: "Christina Valore"
+date: "3/4/2019"
+output:
+  html_document:
+   toc: true
+   toc_float: true
+---
+##Project 2: Analysis on NYC occupational data
+
+Data source: https://labor.ny.gov/stats/lswage2.asp
+
+About the data set: Employment and wage data by occupation are based on the Occupational Employment Statistics (OES) survey, which collects information from approximately 51,000 businesses. Estimates are based on responses from six semi-annual panels collected between November 2014 and May 2017. Wages were then updated to the first quarter of 2018 by making cost-of-living adjustments. Occupational employment and wages are presented for New York State and its 10 labor market regions. As a result of using 3 years of sampled data, some occupations have wage estimates that fall below the appropriate New York State minimum wage. In these cases, the estimates are increased to equal the current local base minimum wage that was in effect at the time the estimates were prepared ($12.00 per hour in New York City, $11.00 per hour on Long Island, and $10.40 per hour in the remainder of the state) in June 2018. Wages may be subject to a higher minimum wage depending on a company's size, location, and/or industry.
+
+###Questions to answer: 
+What occupations have the highest salary? 
+What occupations have the highest/lowest number of people employed? (top/bottom 20)
+What are the average salaries for the top 20 occupations with the largest number of people employed?
+
+###Conclusion: 
+
+####Question 1
+What occupations have the highest salary? 
+
+Eight of the top 20  highest paying jobs are in the healthcare/medical field, with psychiatrists making the most with an average salary of $209,540 Sales managers top the listm making an average salary of $226,010.
+
+####Question 2
+What occupations have the highest/lowest number of people employed? (top/bottom 20)
+
+The most people employed in NYC are  home health aides, 147,580 to be exact. Interesting enough I would consider this also under the umbrella of healthcare.
+
+The least amount of people employed in NYC are designers and textile cutting machine setters at 250. I imagine that with many companies outsourcing textile production, that textile workers are needed less in big cities like NYC.
+
+####Question 3
+What are the average salaries for the top 20 occupations with the largest number of people employed?
+Out of the top 20 occupations with the largest number of people employed, Home Health Aides make the least even though from our previous question we see that are the highest number of people employed in NYC. 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("DT")
+library("dplyr")
+library("tidyr")
+library("ggplot2")
+```
+
+```{r read in .csv}
+data <- read.csv("https://raw.githubusercontent.com/ChristinaValore/data-aqu-mgmt-607/master/wagesCSV.csv", header=TRUE,stringsAsFactors = FALSE)
+
+#view the top and bottom of the data to rename columns and to remove comments from the bottom
+head(data)
+tail(data)
+
+#view column names
+colnames(data)
+
+#rename columns name
+data<-data %>% rename("SOC CODE"=OCCUPATIONAL.EMPLOYMENT.STATISTICS, "Title"=X,"Employment"=X.1,"Mean"=X.2, "Median"=X.3, "Entry"=X.4, "Experienced"=X.5)
+
+#remove empty rows and comment rows from the data set
+data <- data[-c(1, 2, 3,684,685,686,687), ]
+
+head(data)
+tail(data)
+
+#remove the totals from the categories
+data<- data[!grepl("-0000", data$`SOC CODE`),]
+
+#change n/a and blanks to NA
+data[data == "n/a"] <- NA
+data[data == ""]<- NA
+
+#see the amount of NA's and percentage of missing values in the entire dataset. If the value is too large, the analysis will be potentially skewed
+sum(is.na(data))
+mean(is.na(data))
+
+#remove NA's as the percentage missing from the data set is about 3%, small enough to omit
+data<-na.omit(data)
+
+#change data from factors to numerics
+data[3:7]<-lapply(data[3:7], as.numeric)
+```
+
+```{r analysis}
+#What occupations have the highest salary
+top_salary<-as.data.frame(head(arrange(data,desc(Mean)), n = 20))
+
+#Graph the top 20 occupations with the highest salaries
+top_salary[] %>%
+  arrange(Mean) %>%
+  mutate(Title=factor(Title, levels=Title)) %>%
+  ggplot(aes(x=Title, y=Mean)) + geom_bar(stat="identity") + coord_flip() + labs(title="Occupations with highest salary in NYC", x= "Occupation", y="Salary") +theme(plot.title = element_text(size=7))
+
+#What occupations have the highest number of people employed?
+occ_list<-as.data.frame(head(arrange(data,desc(Employment)), n = 20))
+
+#Graph the occupations with the most number of people employed
+occ_list[] %>%
+  arrange(Employment) %>%
+  mutate(Title=factor(Title, levels=Title)) %>%
+  ggplot(aes(x=Title, y=Employment)) + geom_bar(stat="identity") + coord_flip() + labs(title="20 occupations with most employed in NYC", x= "Occupation", y="Amount employed") +theme(plot.title = element_text(size=7))
+
+#What occupations have the lowest number of people employed?
+occ_list_low<-as.data.frame(head(arrange(data,Employment), n = 20))
+
+#Graph occupations with lowest # of people employed
+occ_list_low[] %>%
+  arrange(Employment) %>%
+  mutate(Title=factor(Title, levels=Title)) %>%
+  ggplot(aes(x=Title, y=Employment)) + geom_bar(stat="identity") + coord_flip() + labs(title="20 occupations with least employed in NYC", x= "Occupation", y="Amount employed") +theme(plot.title = element_text(size=7))
+
+```
+
+```{r average salary for top 20 occupations}
+#What are the average salaries for the top 20 occupations with the largest number of people employed?
+head(top_salary, 20)
+
+#Graph the top 20 most employed occupations average salary
+occ_list[] %>%
+  arrange(Mean) %>%
+  mutate(Title=factor(Title, levels=Title)) %>%
+  ggplot(aes(x=Title, y=Mean)) + geom_bar(stat="identity") + coord_flip() + labs(title="Average Salary for the 20 most-employed occupations", x= "Occupation", y="Average Salary") +theme(plot.title = element_text(size=7))
+```
