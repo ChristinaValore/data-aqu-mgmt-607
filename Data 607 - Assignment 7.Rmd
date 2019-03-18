@@ -1,0 +1,74 @@
+---
+title: "Data 607 - Project 3"
+author: "Christina Valore"
+date: "3/17/2019"
+output: html_document
+---
+
+
+Pick three of your favorite books on one of your favorite subjects. At least one of the books should have more
+than one author. For each book, include the title, authors, and two or three other attributes that you find
+interesting.
+
+Take the information that you’ve selected about these three books, and separately create three files which
+store the book’s information in HTML (using an html table), XML, and JSON formats (e.g. “books.html”,
+“books.xml”, and “books.json”). 
+
+To help you better understand the different file structures, I’d prefer that you
+create each of these files “by hand” unless you’re already very comfortable with the file formats.
+
+Write R code, using your packages of choice, to load the information from each of the three sources into
+separate R data frames. Are the three data frames identical?
+
+#HTML
+
+```{r HTML}
+library(RCurl)
+library(XML)
+
+#first we get the HTML data from the git URL 
+html<- getURL("https://raw.githubusercontent.com/ChristinaValore/data-aqu-mgmt-607/master/books.html")
+
+#read the data into a variable in R
+books.html <- readHTMLTable(html, header = TRUE)
+books.html
+
+#load html into a dataframe
+html_df <- data.frame(books.html$`Fiction Books`)
+html_df
+```
+
+## JSON
+
+```{r json}
+library(jsonlite)
+
+json <- getURL("https://raw.githubusercontent.com/ChristinaValore/data-aqu-mgmt-607/master/books.json")
+books.json <- fromJSON(json)
+books.json
+
+#load html into a dataframe
+json_df <- data.frame(books.json$`Fiction Books`)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+xml<- getURL("https://raw.githubusercontent.com/ChristinaValore/data-aqu-mgmt-607/master/books.xml")
+books.xml <- xmlParse(xml)
+root <- xmlRoot(books.xml)
+xmlName(root)
+
+#resulting matrix was transposed and put into a dataframe
+xml_df <- data.frame(t(xmlSApply(root, function(x) xmlSApply(x, xmlValue))), row.names = NULL)
+```
+
+Conclusion: 
+
+The three dataframes generates are similar but not identical. 
+
+The data frames derived from the XML and HTML table files are closet with the exception of the column name Author, as the XMl has two author columns to separate the book with the two authors, while the HTML has only one, where the two authors are separated by a ','.
+
+The JSON dataframe also has a different author structure for the book with two authors as I chose to use an array to store the two names. This resulted in the author values being parsed as a list. 
