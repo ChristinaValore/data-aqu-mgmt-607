@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Fiction_Books>
+    <Book>
+        <Title>Harry Potter and the Sorcerer's Stone</Title>
+        <Author>J. K. Rowling</Author>
+        <Author />
+        <Genre>Fantasy Fiction, Drama, Young adult fiction, Mystery, Thriller, Bildungsroman</Genre>
+        <Year>1997</Year>
+    </Book>
+    <Book>
+        <Title>The Giving Tree</Title>
+        <Author>Shel Silverstein</Author>
+        <Author />
+        <Genre>Picture book, Children's literature, Fiction</Genre>
+        <Year>1964</Year>
+    </Book>
+    <Book>
+        <Title>An Anonymous Girl</Title>
+        <Author>L Greer Hendricks</Author>
+        <Author>Sarah Pekkanen</Author>
+        <Genre>Thriller, Suspense, Psychological Fiction</Genre>
+        <Year>2019</Year>
+    </Book>
+</Fiction_Books>
