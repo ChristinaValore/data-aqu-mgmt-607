@@ -1,0 +1,49 @@
+---
+title: 'Data 607: Assignment 9'
+author: "Christina Valore"
+date: "3/31/2019"
+output:
+  html_document:
+   toc: true
+   toc_float: true
+---
+##Web APIs
+
+The New York Times web site provides a rich set of APIs, as described here: http://developer.nytimes.com/docs You’ll need to start by signing up for an API key. Your task is to choose one of the New York Times APIs, construct an interface in R to read in the JSON data, and transform it to an R dataframe.
+
+```{r packages}
+library(jsonlite)
+library(tidyr)
+suppressMessages(library(dplyr))
+suppressMessages(library(RCurl))
+library(httr)
+suppressWarnings(library(kableExtra))
+```
+
+##Step 1
+First we called the URL using our API key to see the most viewed articles on the NYT site for the past seven days. Then we place the data into a dataframe:
+```{r dataframe}
+url <- "https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=PdwtmFV6ttbuQ5ALkkOOQLGl6GBqrPwm"
+
+resp <- GET(url, accept_json())
+json <- fromJSON(content(resp, as="text"))
+df <- data.frame(json)
+```
+
+##Step 2
+Next, we subsetted the data pulling out important columns such as title, author, URL and Abstract and placed those into a nww smaller dataframe. 
+
+```{r clean}
+head(df)
+tidied_df<-subset(df, select=c(results.views,results.title,results.byline,results.url,results.section,results.abstract))
+names(tidied_df) <- c("Top ","Article Title ", "Author(s) ", "URL ", "Section ", "Abstract ")
+
+tidied_df %>%
+  kable() %>%
+  kable_styling()
+```
+
+##Conclusion
+
+We can see some of the most viewed headlines over the past week, the most viewed article for this week is titled "Fossil Site Reveals Day That Meteor Hit Earth and, Maybe, Wiped Out Dinosaurs". The most viewed articles mostly came from the US section in the NYT, 5/20 of the articles to be precise. 
+
