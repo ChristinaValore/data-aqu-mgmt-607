@@ -3,9 +3,10 @@ title: 'Data 607: Sephora Recommender System'
 author: "Christina Valore"
 date: "4/10/2019"
 output:
-  html_document:
-   toc: true
-   toc_float: true
+    html_document:
+    theme: readable
+    toc: true
+    number_sections: false
 ---
 
 ### Scenario Design analysis
