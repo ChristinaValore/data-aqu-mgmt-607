@@ -20,31 +20,31 @@ Their goals are to be in control of how they look physically through makeup art.
 
 3. How can you help them accomplish those goals?
 
-By offering them personalized makeup suggestions as makeup is very versatile, however, certain color palattes are not for everyone. We want to be able to suggest only makeup items we think will enhance the users beauty. 
+By offering them personalized makeup suggestions as makeup is very versatile, however, certain color palettes are not for everyone. We want to be able to suggest only makeup items we think will enhance the user's beauty. 
 
 
-###Reverse Engineering
+### Reverse Engineering
 
 Suggestions seem to be based off the context of several items such as: 
 
 - Previous purchases: using what this customer has bought previously, we can potentially see things like the foundation shades, which is a good indicator of the color of skin the user has. From this we can recommend items that compliment that specific shade, i.e. fairer skin foundation -> suggest light brown eyeliner as black may be too harsh 
 
-- Top performing products: we always want our customers to know about the best rated products we carry, so by suggesting top perfoming products as they relate to the user. Makeup lovers are usually always keen to try the top perfoming products as optimal beauty if always the goal.
+- Top performing products: we always want our customers to know about the best rated products we carry, so by suggesting top performing products as they relate to the user. Makeup lovers are usually always keen to try the top performing products as optimal beauty if always the goal.
 
-- Website browsing: as users spend time on our site, we can anlyze the time they spend browsing specific sections. If a user exits a section without buying an item after spending 10+ minutes browsing, the recommender system can show the user options they may have not see but think s/he will like based on their activity. 
+- Website browsing: as users spend time on our site, we can analyze the time they spend browsing specific sections. If a user exits a section without buying an item after spending 10+ minutes browsing, the recommender system can show the user options they may have not seen but think s/he will like based on their activity. 
 
 - Search box: using terms placed in the search box on the site, we can analyze the phrases used to better understand what our users are mostly looking for. If a user searches mostly for eyeshadow then the recommender system should immediately begin to suggest eyeshadows and other products related to the eyes, i.e. mascara, eyeliner, brow products
 
-###Recommendations
+### Recommendations
 
 Health purposes: 
 
-It would be useful to have a way to filter out items users may be potentially allergic to. From experience, I have purchased face makeup that I was slightly allergic to and although nothing serious occurred, it was still an unpleasant feeling to have an itchy face for several hours. This could be an additional data field in the online account that could account for potential allergens in products.
+It would be useful to have a way to filter out item's users may be potentially allergic to. From experience, I have purchased face makeup that I was slightly allergic to and although nothing serious occurred, it was still an unpleasant feeling to have an itchy face for several hours. This could be an additional data field in the online account that could account for potential allergens in products.
 
-Ethical treatement of animals:
+Ethical treatment of animals:
 
 I would also recommend taking into account those who are vegans. Most vegans will not use products that were tested on animals or have any animal products in them. Looking at the website right now, I am being recommended several products that are tested on animals that I would never purchase. 
 
 Variation:
 
-Currently the recommender system only shows about 12 products and 7 of those products are pretty much the same things. I would ask for more variation in products being suggested. I even click through the site a few times and went to different sections and still I am being shown the same recommendations. 
+Currently the recommender system only shows about 12 products and 7 of those products are pretty much the same things. I would ask for more variation in products being suggested. I even clicked through the site a few times, going to different sections and still I am shown the same recommendations. 
