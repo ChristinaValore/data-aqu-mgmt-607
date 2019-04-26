@@ -35,7 +35,7 @@ library(RNeo4j)
 After connecting to the SQL database, I then used a select statement to pull out the ALL data for the airports and flights tables and added them to data frames inside R. I also did a data dimension to check to ensure the data prior to import matched the exported version in R.
 ```{r SQL}
 #connect to SQL database
-flights_db <- dbConnect(MySQL(), user='root', password='Data607!', dbname='flights', host='127.0.0.1')
+flights_db <- dbConnect(MySQL(), user='root', password='****', dbname='flights', host='127.0.0.1')
 
 #count number of rows/columns in airport/flights tables (airport: 4x3, flights: 24x7)
 air_rcount<-dbGetQuery(flights_db,"SELECT COUNT(*) FROM airports")
@@ -67,7 +67,7 @@ dim(flights)
 After connecting to the Neo4j database, I cleared any exisiting graphs, created queries on both the airports/flights to create nodes and then created relationships by matching the aiport lables to the departure/arrival airports in flights. Once completed, we see that 24 flight nodes and 4 airport nodes with 48 relationships were created which makes sense because each flight (24) has a departue and arrival (24 X 2 = 48).
 ```{r Neo4j}
 #create the connection from Neo4J to R 
-graph <- startGraph("http://localhost:7474/db/data/", username = "data607", password = "data607")
+graph <- startGraph("http://localhost:7474/db/data/", username = "****", password = "data607")
 
 #clear exisiting graphs 
 clear(graph, input = FALSE)
