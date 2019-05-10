@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Business Question
 
+<<<<<<< HEAD
 Is the time of the year predicitive of the NYC subway on-time perfromance (OTP)?
 
 ## Obtain the Data
@@ -74,6 +75,21 @@ ggplot(month_mean,aes(x=reorder(LINE,-AVG), y= AVG)) + geom_bar(stat="identity")
 ## Modeling 
 
 ## Interpreration
+=======
+Is weather a predictor of the NYC subway's on time percentage (OTP)?
+
+## Obtain the Data
+
+
+
+## Cleansing
+
+## Exploration
+
+## Modeling 
+
+## Interpreting
+>>>>>>> 1cb3a3e4611a96402e1a87ac46033c657fde6749
 
 ## Conclusion
 
