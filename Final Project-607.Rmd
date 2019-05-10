@@ -1,0 +1,33 @@
+---
+title: 'Data 607: Final Project'
+author: "Anthony Munoz, Christina Valore, David Apolinar"
+date: "5/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Project Overview
+
+## Business Question
+
+Is weather a predictor of the NYC subway's on time percentage (OTP)?
+
+## Obtain the Data
+
+
+
+## Cleansing
+
+## Exploration
+
+## Modeling 
+
+## Interpreting
+
+## Conclusion
+
+
+
