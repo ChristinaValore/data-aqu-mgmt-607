@@ -89,7 +89,6 @@ Is weather a predictor of the NYC subway's on time percentage (OTP)?
 ## Modeling 
 
 ## Interpreting
->>>>>>> 1cb3a3e4611a96402e1a87ac46033c657fde6749
 
 ## Conclusion
 
